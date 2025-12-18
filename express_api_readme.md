@@ -22,7 +22,7 @@ Example object:
 
 1. Clone the repository:
 ```bash
-git clone <YOUR_GITHUB_REPO_LINK>
+git clone <https://github.com/Zharrrkynn/COA1>
 cd my-express-api
 ```
 
@@ -100,12 +100,12 @@ my-express-api/
 ├─ package.json
 ├─ server.js
 ├─ data.json
-└─ README.md
+└─ express_api_readme.md
 ```
 - `server.js` — main Express server file
 - `data.json` — storage for JSON objects
 - `package.json` — dependencies and scripts
-- `README.md` — project documentation
+- `express_api_readme.md` — project documentation
 
 ---
 
