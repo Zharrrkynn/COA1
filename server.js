@@ -7,7 +7,7 @@ const app = express();
 const PORT = 3000;
 const DATA_FILE = path.join(__dirname, 'data.json');
 
-app.use(express.json()); // middleware для JSON
+app.use(express.json()); 
 
 
 async function readData() {
@@ -37,7 +37,7 @@ app.get('/objects', async (req, res) => {
     res.json(objects);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Ошибка чтения данных' });
+    res.status(500).json({ error: 'Data reading error' });
   }
 });
 
@@ -46,7 +46,7 @@ app.post('/objects', async (req, res) => {
   try {
     const { name, ...others } = req.body;
     if (!name || typeof name !== 'string') {
-      return res.status(400).json({ error: 'Поле name обязательно' });
+      return res.status(400).json({ error: 'The name field is required' });
     }
 
     const objects = await readData();
@@ -57,7 +57,7 @@ app.post('/objects', async (req, res) => {
     res.status(201).json(newObj);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Ошибка создания объекта' });
+    res.status(500).json({ error: 'Object creation error' });
   }
 });
 
@@ -67,19 +67,19 @@ app.put('/objects/:id', async (req, res) => {
     const id = Number(req.params.id);
     const { name, ...others } = req.body;
     if (!name || typeof name !== 'string') {
-      return res.status(400).json({ error: 'Поле name обязательно' });
+      return res.status(400).json({ error: 'The name field is required' });
     }
 
     const objects = await readData();
     const index = objects.findIndex(o => o.id === id);
-    if (index === -1) return res.status(404).json({ error: 'Объект не найден' });
+    if (index === -1) return res.status(404).json({ error: 'Object not found' });
 
     objects[index] = { ...objects[index], name, ...others };
     await writeData(objects);
     res.json(objects[index]);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Ошибка обновления объекта' });
+    res.status(500).json({ error: 'Object update error' });
   }
 });
 
@@ -89,21 +89,21 @@ app.delete('/objects/:id', async (req, res) => {
     const id = Number(req.params.id);
     const objects = await readData();
     const index = objects.findIndex(o => o.id === id);
-    if (index === -1) return res.status(404).json({ error: 'Объект не найден' });
+    if (index === -1) return res.status(404).json({ error: 'Object not found' });
 
     objects.splice(index, 1);
     await writeData(objects);
     res.json({ success: true });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Ошибка удаления объекта' });
+    res.status(500).json({ error: 'Object deletion error' });
   }
 });
 
-// 404 для всех других маршрутов
-app.use((req, res) => res.status(404).json({ error: 'Маршрут не найден' }));
 
-// --- Запуск сервера ---
+app.use((req, res) => res.status(404).json({ error: 'Route not found' }));
+
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
